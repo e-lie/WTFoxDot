@@ -1,4 +1,5 @@
 Clock.clear()
+
 from FoxDot import *
 from FoxDot.preset import *
 
@@ -10,7 +11,7 @@ a2.oct=PRand(3,6)
 
 a3 >> gone(0)
 
-b3.gone_pitch = linvar([0,1,.4,.8,0,.6],PRand(2,24), start=Clock.mod(4))
+a3.pitch = linvar([0,1,.4,.8,0,.6],PRand(2,24), start=Clock.mod(4))
 
 a3.stop()
 
