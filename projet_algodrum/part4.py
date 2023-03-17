@@ -11,16 +11,12 @@ Scale.default = Scale.minor
 #########################################################################
 
 bpm_to(160, 32)
-change_bpm(130, True, 0.22)
-change_bpm(140, True, 0.22)
 change_bpm(160, True, 0.22)
 
-########################################################
+Clock.meter(4,4)
 
 chords = var([0,5,2,3],[8,4,2,2])
-
 Root.default = 0
-
 Scale.default = Scale.minor
 
 
@@ -42,10 +38,11 @@ a1.oct=4
 a1 + chords
 
 b2 >> blip(chords, dur=clave23, sus=linvar([1,10], 16), oct=6)
+
 b2.pause(4,16)
 b2.stop()
 
-b1 >> blip(chords, dur=cascara, sus=linvar([.3,3],16), oct=5, pan=0)
+b1 >> blip(chords, dur=PDur(5,8), sus=linvar([.3, 3], 16), oct=5, pan=0)
 b1.pause(4,16,8)
 
 b1.only()
@@ -69,9 +66,12 @@ b2.stop()
 b2 + [0,1,2,1]
 
 d7 >> bbass(chords, dur=PDur(3,8), oct=(2,3), amp=1.5)
+d7 >> subbass(0, root=chords, dur=PDur(3,8), oct=5, amp=1.5, vol=1, room2=3)
+d8 >> bbass(0, root=chords, dur=PDur(3,8), oct=4, amp=1.5, vol=1, room2=3)
+b2 >> padarp(0).fadein()
 d7 >> bbass(0, dur=PDur(3,8), oct=(2,3), amp=1.5).pause(8,32)
 
-d7 + [0,0,2] + [0,0,0,0,-1]
+d7 + P[0,0,2] + P[0,0,0,0,-1]
 
 d7.amp = 2
 
@@ -148,11 +148,14 @@ Root.default = 0
 
 pitches = [0,2,2,1,-2,0,0,1]
 
-b9 >> bass303(chords, dur=[.25,.5], sus=b1.dur-0.04)
-b9 >> bass303(chords, dur=PDur(3,8), sus=b1.dur-0.04)
+b9 >> bass303(chords, dur=PDur(3,8), sus=b1.dur-0.1)
+b9.cutoff=0
+b9.reso=0
+b9.decay=1
+b9.env_mod=0
+
 b9.cutoff=.5
 b9.reso=.5
-b9.env_mod=1
 b9.decay=.6
 b9.oct=5
 
@@ -161,9 +164,6 @@ b9.only()
 
 b9.stop()
 
-b9.cutoff=0
-b9.reso=0
-b9.decay=0
 
 b9.cutoff=linvar([0,1,.5],32, start=Clock.mod(4))
 b9.reso=linvar([0,1,.5],24, start=Clock.mod(4))
@@ -185,13 +185,13 @@ k4.only()
 
 k4.fadeout()
 
-b3 >> vibra(chords, dur=[.5,.5], sus=b1.dur-.04, amp=1, vol=1.5).span(srot(32))
+b3 >> vibra(chords, dur=[.5,.5], sus=b1.dur-.04, amp=1, vol=1)
 
-b3 >> blip(chords, dur=.25, sus=b3.dur-.04, amp=1, vol=1.5)
+b3 >> blip(chords, dur=.25, sus=1, amp=1.5, oct=[4,5,6,5,6,7])
 
 b3 >> blip
 
-d3 >> play("<.c.c.c.cc><...(...*)><..(~).>", dur=1/4, rate=var([1,1.3]), sample=var([1,2], 8), amp=2)
+# d3 >> play("<.c.c.c.cc><...(...*)><..(~).>", dur=1/4, rate=var([1,1.3]), sample=var([1,2], 8), amp=2)
 
 a4.stop()
 
@@ -240,7 +240,15 @@ k3.stop()
 
 k_all.stop()
 
-k4 >> kicker("<V....V..>", dur=.5, sample=var([0,1,2], 32), rate=linvar([.8,1.2], 16), amp=1, output=12)
+k4 >> kicker(
+    "<V....V..>",
+    dur=.5,
+    sample=var([0, 1, 2], 32),
+    rate=linvar([.8, 1.2], 16),
+    amp=1,
+    output=12
+)
+
 d6 >> play("<..*...*.>", dur=.5, sample=1, rate=(.8,1.2,1.6), amp=1.5)
 
 k4.stop()
@@ -250,3 +258,5 @@ d8 >> play("/", dur=16, pan=[-1, 0, -1], amp=1.5)
 Clock.bpm = linvar([120, 160], PRand(8,32))
 
 Clock.bpm = 160
+
+print(SynthDefs)
