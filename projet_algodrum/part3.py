@@ -12,79 +12,79 @@ Scale.default = Scale.minor
 ###############################################
 
 change_bpm(110, True, 0.22)
+change_bpm(130, True, 0.22)
+
+bpm_to(130,24)
 
 d1 >> play(
     ".c",
     dur=.5,
-    amp=3*PWhite(.8,1.2),
-    rate=.7,
+    amp=1*PWhite(.8,1.2),
+    rate=1.7,
     cut=2,
     room2=.3,
-    crush=1,
+    crush=0,
     bits=5,
-    pan=1
+    pan=0
 )
 
+d1.pause(16,32,8)
+
 d1.pause(8,32,16)
-d1.degree = "(.*)c"
+d1.degree = "(.c)c"
 d1.degree = "(.*)(cc[**]=)"
 d1.degree = "(***~..[**~][~*][*~]..cccccc)"
 d1.crush = 16
 d1.bits = 3
-d1.dur=PDur(5,8)
-d1.dur = var([.5, .25], [7,1])
+d1.dur=PDur(3,8)
+d1.dur = var([.5, .25], [7,4])
+d1.rate = PWhite(1,3)
 
 ################################################
 
+
+Scale.default = Pvar([Scale.minor, Scale.major], 16)
+
 p1 >> dakeys(
     [0, 2, 5, 2, -2, 1, 4],
+    # [0, 2, 4, 2, -2, P4],
     dur=.5,
-    # oct=(3,6),
-    oct=6,
+    oct=(3,5,7),
+    # oct=6,
     amp=.8,
-    pad=0,
-    modelb=0,
-    pluck=0,
-    space=.4,
-)
+    # pad=0,
+    # modelb=0,
+    # pluck=1,
+    # space=.4,
+    vol=1.5,
+    # vol=1.0,
+)#.fadein(16)
+
+p1.pad = linvar([0, .5], 12) 
+p1.modelb = linvar([0,1],32)
+p1.pluck = linvar([0,1],24)
+p1.space = linvar([0,1],32)
+
+p1.fadeout(64)
+
+p1.sampfadeout(32)
+
+p1.only()
+
+p1.stop()
+
+p1.stop()
 
 a2 >> padarp(
     [0, 2,0,5],
     # dur=[1.1,.9],
     dur=.5,
-    oct= (3,6),
-    amp=.8
+    oct=4,
+    amp=1.5,
+    vol=1.5,
 )
+a2.fadein()
 
-b2 >> blip(chords, dur=clave23, sus=linvar([1,10], 16), oct=7)
-b2.pause(4,16)
+a2.fadeout(64)
 
-b1 >> blip(chords, dur=cascara, sus=linvar([.3,3],16), oct=5, pan=0)
-b1.pause(4,16,8)
-
-b1.only()
-
-k1.stop()
-
-m1.fadeout(16)
-
-m1.stop()
-
-b2 >> blip(chords, dur=clave23, sus=linvar([1,10], 16), oct=6).pause(4,16).mpan(mrot(16)) + P(0,2)
-b1 >> blip(chords, dur=cascara, sus=linvar([.3,3],16), oct=4).pause(4,16,8).mpan(mrot(24)) + P[0, 2, 0, P(0,2)]
-b1 >> blip(chords, dur=cascara, sus=linvar([.3,3],16), oct=(4,6)).pause(4,16,8).mpan(mrot(24)) + P[0, 2, 0, P(0,2)]
-
-b2.stop()
-
-b2 + [0,1,2,1]
-
-d7 >> bbass(chords, dur=PDur(5,8), oct=(2,3), amp=1, output=12)
-
-d7 + [0,0,2] + [0,0,0,0,-1]
-
-d7.sampfadeout(64)
-
-d7.only()
-
-k2 >> play("V.", dur=.5, amp=1, crush=8, bits=4, lpf=linvar([200,1000],32), output=12) #Ah le kick enfin
-k1 >> kicker("<v.>", dur=.5, amp=1, crush=4, bits=16, rate=1, output=12)
+s2.stop()
