@@ -6,12 +6,15 @@ from FoxDot.preset import *
 fordrip, gone = add_chains("fordrip1", "gone1")
 apad, souls = add_chains("apad1", "souls1")
 marimba, vibra = add_chains("marimba1", "vibra1")
-darkpass, hpluck = add_chains("darkpass", "hpluck1")
+# darkpass, hpluck = add_chains("darkpass", "hpluck1")
+rdrum, bpiano = add_chains("rdrum1", "bpiano")
 dakeys, padarp = add_chains("dakeys1", "padarp1")
-# rdrum, bpiano = add_chains("rdrum1", "bpiano")
 acidbb, bass303 = add_chains("acidbb", "bass303")
 
 Root.default = var([0,1,2], PRand([1,8]))
+
+print(reainstru_factory._reaproject)
+print(reaproject)
 
 Root.default = 0
 Root.default = var(PTri(12), 8, start=Clock.mod(4))
@@ -22,11 +25,12 @@ Scale.default = Scale.minor
 Scale.default = Scale.major
 Scale.default = Scale.majorPentatonic
 
-cc >> play("t", dur=1, rate=[1], pan=0, amp=[2], output=14)
-
-change_bpm(110, True, 0.24)
+change_bpm(110, True, 0.22)
 Root.default = 0
 Scale.default = Scale.minor
+
+cc >> play("t", dur=1, rate=[1], pan=0, amp=[2], output=14)
+
 
 ######################################
 

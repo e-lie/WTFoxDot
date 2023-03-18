@@ -1,13 +1,10 @@
 Clock.clear()
 
-Root.default = var([0,1,2], PRand([1,8]))
 Root.default = 0
-
-Root.default = var(PTri(6)*2, 15*.25*3, start=Clock.mod(3.75))
-
+Root.default = var(PTri(6)*2, 15*.25, start=Clock.mod(3.75))
 Root.default = var(PTri(12), .25)
+Scale.default = Pvar([Scale.majorPentatonic, Scale.minor, Scale.lydian, Scale.aeolian], 15*.25)
 
-Scale.default = Pvar([Scale.minor, Scale.major, Scale.minor, Scale.majorPentatonic, Scale.major], PRand(1,4)[:32]*4)
 Scale.default = Scale.majorPentatonic
 Scale.default = Scale.minor
 Scale.default = Scale.lydian
@@ -24,17 +21,21 @@ cc >> play("<(t----)..>", dur=.25, output=14, amp=6)
 
 m1 >> marimba(
     # "abfff...ffbafff",
-    # "abfff...ffbafff",
-    P[12,2,4,2,-2].stutter(3).shuffle(),
-    amplify=var([1,0,1], [1,.75,2,2,.5,1.25]),
-    # oct=4,
-    oct=([2, 5], [3, 4, 5], 6),
-    # amp=.7,
-    amp=linvar([.45, .75], 16, start=Clock.mod(4)),
-    # dur=Pvar([.125, cascara / 2], [8, 4])
+    P[0,0,-2,0,5,-2,0,0,-2,5,0,-2,0,0,5].rotate(6),
+    # P[0,0,-2,0,5,-2,0,0,-2,5,0,-2,0,0,5].rotate(6) + [0,1,-1,2],
+    # P[0,0,-2,0,5,-2,0,0,-2,5,0,-2,0,0,5].rotate(6) + P(0,2),
+    # P[12,2,4,2,-2].stutter(3).shuffle(),
+    # amplify=var([1,0,1], [1,.75,2,2,.5,1.25]),
+    amplify=1,
+    oct=4,
+    # oct=([2, 5], [3, 4, 5], 6),
+    # amp=.8,
+    amp=linvar([.75, .45], 15*.25, start=Clock.mod(4)),
+    # dur=Pvar([.25, cascara], [8, 4]),
+    sus=.1,
     dur=.25,
-    vol=1,
-) + (0,2)
+    vol=1.2,
+) 
 
 m1.degree = "ab[d][cc]a.........b[aaaa]([c]a[cccc]d)[ff]"
 

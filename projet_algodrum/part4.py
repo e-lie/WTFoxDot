@@ -15,10 +15,10 @@ change_bpm(160, True, 0.22)
 
 Clock.meter(4,4)
 
-chords = var([0,5,2,3],[8,4,2,2])
 Root.default = 0
-Scale.default = Scale.minor
+Scale.default = Scale.major
 
+chords = var([0,5,2,3],[8,4,2,2])
 
 a1 >> apad(
     # [0, 4, -2],
@@ -57,6 +57,9 @@ b2 >> blip(chords, dur=clave23, sus=linvar([1,10], 16), oct=6).pause(4,16) + P(0
 b1 >> blip(chords, dur=cascara, sus=linvar([.3,3],16), oct=4).pause(4,16,8) + P[0, 2, 0, P(0,2)]
 b1 >> blip(chords, dur=cascara, sus=linvar([.3,3],16), oct=(4,6)).pause(4,16,8) + P[0, 2, 0, P(0,2)]
 
+b2.dur=.25
+b2 + [0,-2,0,2]
+
 b2 + pitches
 
 b1.oct = (3,4)
@@ -66,8 +69,8 @@ b2.stop()
 b2 + [0,1,2,1]
 
 d7 >> bbass(chords, dur=PDur(3,8), oct=(2,3), amp=1.5)
-d7 >> subbass(0, root=chords, dur=PDur(3,8), oct=5, amp=1.5, vol=1, room2=3)
-d8 >> bbass(0, root=chords, dur=PDur(3,8), oct=4, amp=1.5, vol=1, room2=3)
+d7 >> subbass2(0, root=chords, dur=PDur(3,8), oct=4, amp=3, vol=1, room2=3)
+d8 >> bbass(0, root=chords, dur=PDur(3,8), oct=3, amp=1.5, vol=1, room2=3)
 b2 >> padarp(0).fadein()
 d7 >> bbass(0, dur=PDur(3,8), oct=(2,3), amp=1.5).pause(8,32)
 
