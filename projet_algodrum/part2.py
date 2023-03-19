@@ -21,16 +21,16 @@ cc >> play("<(t----)..>", dur=.25, output=14, amp=6)
 
 m1 >> marimba(
     # "abfff...ffbafff",
-    P[0,0,-2,0,5,-2,0,0,-2,5,0,-2,0,0,5].rotate(6),
-    # P[0,0,-2,0,5,-2,0,0,-2,5,0,-2,0,0,5].rotate(6) + [0,1,-1,2],
+    # P[0,0,-2,0,5,-2,0,0,-2,5,0,-2,0,0,5].rotate(6),
+    P[0,0,-2,0,5,-2,0,0,-2,5,0,-2,0,0,5].rotate(6) + [0,1,-1,2],
     # P[0,0,-2,0,5,-2,0,0,-2,5,0,-2,0,0,5].rotate(6) + P(0,2),
     # P[12,2,4,2,-2].stutter(3).shuffle(),
-    # amplify=var([1,0,1], [1,.75,2,2,.5,1.25]),
-    amplify=1,
-    oct=4,
+    amplify=var([1,0,1], [1,.75,2,2,.5,1.25]),
+    # amplify=1,
+    oct=6,
     # oct=([2, 5], [3, 4, 5], 6),
-    # amp=.8,
-    amp=linvar([.75, .45], 15*.25, start=Clock.mod(4)),
+    amp=.8,
+    # amp=linvar([.75, .45], 15*.25, start=Clock.mod(4)),
     # dur=Pvar([.25, cascara], [8, 4]),
     sus=.1,
     dur=.25,
@@ -47,9 +47,11 @@ m1.oct = (var([4,5,4,3],5) + 6)
 
 ###############################################################
 
-m3 >> vibra("ab[d][cc]a.b[aaaa]([cccc]d)[ff]", oct=[2,3,5], amp=linvar([.5,.9],7), dur=cascara, vol=1)
+m3 >> vibra("ab[d][cc]a1b[aaaa]([cccc]d)[ff]", oct=[2,3,5], amp=linvar([.5,.9],7), dur=cascara, vol=1).fadein()
 
 Root.default = var([0,2,-2],15)
+
+m1.vol=.9
 
 m1.degree = P[12,2,4,2,-2].stutter(3).shuffle()
 m1.amplify = var([1,0,1], [1,.75,2,2,.5,1.25])
@@ -75,7 +77,7 @@ m3.only()
 
 m1.fadeout(64)
 
-m1.stop
+m1.stop()
 
 ###############################################################
 
@@ -126,11 +128,11 @@ k1.dur = 1.25
 
 b1 >> padarp(
     # [0],
-    P[0] + [0,0,2,-2,0],
+    # P[0] + [0,0,2,-2,0],
     # dur=[1.25, .5, .75],
     dur=[1.25, .5, .75, .5, .75],
     output=12,
-    oct=(3,4),
+    oct=(3,4,6),
     amp=1.5,
     release=0,
     reverb=1
@@ -166,6 +168,8 @@ b1 >> bbass([0], dur=var([.25,.5],5), output=12, oct=3)
 ##### truc en binaire
 
 s1 >> bbass([0], dur=[.5,.25,.25], oct=5, amp=P[.8,.7,.8,1.1]*1.5, sus=s1.dur+0.2, output=12) # + P(0,2)
+
+s1.sampfadeout(32)
 
 
 ###### NOtes

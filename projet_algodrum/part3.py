@@ -9,7 +9,7 @@ Root.default = var(PTri(12), .25)
 Scale.default = Pvar([Scale.minor, Scale.major, Scale.minor, Scale.majorPentatonic, Scale.major], PRand(1,4)[:32]*4)
 Scale.default = Scale.minor
 
-Clock.meter = (15,16)
+Clock.meter = (4,4)
 
 bpm_to(130,24)
 change_bpm(130, True, 0.22)
@@ -40,7 +40,6 @@ d1.rate = PWhite(1,3)
 
 ################################################
 
-
 Scale.default = Pvar([Scale.minor, Scale.major], 16)
 
 p1 >> dakeys(
@@ -57,6 +56,10 @@ p1 >> dakeys(
     vol=1.5,
     # vol=1.0,
 ).fadein(16)
+
+s2.fadeout(64)
+
+p1.oct=(3,5,7)
 
 p1.pad = linvar([0, .5], 12) 
 p1.modelb = linvar([0,1],32)
@@ -86,3 +89,5 @@ a2.fadein()
 a2.fadeout(64)
 
 s2.stop()
+
+k1.stop()

@@ -29,6 +29,8 @@ change_bpm(110, True, 0.22)
 Root.default = 0
 Scale.default = Scale.minor
 
+bpm_to(110)
+
 cc >> play("t", dur=1, rate=[1], pan=0, amp=[2], output=14)
 
 
@@ -48,6 +50,8 @@ a1 >> apad(
     oct=5,
 )
 a1.fadein(16)
+
+a1.only()
 
 a1.stop()
 
@@ -88,6 +92,7 @@ pitches = [0, 2, 5, 2, 0, -2, 5, 4]
 s1 >> space(
     # [0],
     pitches,
+    # chords2,
     # dur=1,
     # dur=[1,.5],
     # dur=.5,
@@ -97,7 +102,10 @@ s1 >> space(
     sus=s1.dur + 0.2,
     output=12,
     room2=3
-) + (0, 5)
+)  + (0, 5)
+
+
+s2.fadeout(24)
 
 Root.default = var([0,2,-2], 16, start=Clock.mod(4))
 
@@ -119,6 +127,8 @@ s1.dur=PDur(5,8)
 
 s1 + P[0,1,0,0,2,-2]
 
+a1.stop()
+
 ###################################################
 
 s2 >> blip(
@@ -129,7 +139,12 @@ s2 >> blip(
     # oct=[5, 7, 6],
     oct=[5, 7, 6, 7],
     sus=linvar([.3, 2], [48], start=Clock.mod(4)),
-)#.fadein(32, fvol=1.5)
+).fadein(32, fvol=1.5)
+
+s2.degree = pitches
+
+
+s_all.ampfadeout(64)
 
 
 s2.dur = var([.25, .5, 1/3], [10,4,2])
@@ -138,6 +153,8 @@ s2.degree = [0,2,0,4,1,5,0,5,3]
 s2.degree = var(pitches,.5)
 
 s2.oct=P[P(4,5,3,6), (4,5), (3,6), 5, 6, 3]
+
+s2.oct=(5,7)
 
 s2.oct=Pvar([P[P(4,5,3,6), (4,5), (3,6), 5, 6, 3], [3,4,5,6], P(3,4,5,6)], 8)
 
@@ -159,7 +176,13 @@ k1.degree = "<V.x.><.(..[XV])[(...X)X]>"
 
 k1.pause(8,48)
 
+k1.stop()
+
+k1.fadeout(32)
+
 ##################################################
+
+s1.fadeout(32)
 
 p2 >> padarp(
     [0, 2],
@@ -187,7 +210,7 @@ k1 >> play(
     sample=0,
     pdb=0,
     amp=1.5,
-    dur=PDur(3, 8),
+    # dur=PDur(3, 8),
     dur=Pvar([PDur(3, 8), .25, .5, PDur(5, 8)], PRand(2, 8)),
 )
 k1.fadein()
@@ -213,3 +236,4 @@ a4.sampfadeout(64)
 a4.only()
 
 a4.fadeout()
+cc >> play("t", dur=1, rate=[1], pan=0, amp=[2], output=14)

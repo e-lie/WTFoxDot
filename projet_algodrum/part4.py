@@ -27,7 +27,7 @@ d6 >> play("<..*...*.>", dur=.5, sample=1, rate=(.8,1.2,1.6), amp=1.5)
 d8 >> play("/", dur=16, pan=[-1, 0, -1], amp=1.5)
 
 bb >> bbass(
-    # chords,
+    chords2,
     # chords2,
     # chords3,
     dur=PDur(3, 8),
@@ -37,6 +37,9 @@ bb >> bbass(
     sus=linvar([.5,2], 32),
     # pan=var([-.5, 0, .5], 4)
 )#.pause(8, 32)
+
+
+bb.only()
 
 
 k1 >> kicker(
@@ -53,13 +56,13 @@ k1 >> kicker(
 
 l1 >> blip(
     # chords,
-    chords + P(0,2),
+    chords2 + P(0,2),
     # chords2 + P[0,2,0,-2,0,3,0,5,4,0] + P(0,2),
     # chords2,
     # chords3,
-    # dur=clave23,
+    dur=clave23,
     # dur=.25,
-    dur=PDur(5,8),
+    # dur=PDur(5,8),
     # dur=Pvar([.5, .25, 1/3, PDur(5,8)], 8),
     sus=linvar([.4, 6], 16),
     oct=6,
@@ -69,14 +72,14 @@ l1 >> blip(
 ).pause(4, 16)
 
 l2 >> blip(
-    # chords,
-    chords + P[0, 2, 0, P(0, 2)],
+    chords,
+    # chords + P[0, 2, 0, P(0, 2)],
     # chords2,
     # chords3,
-    # dur=cascara,
-    dur=PDur(3,8),
+    dur=cascara,
+    # dur=PDur(3,8),
     sus=linvar([.3, 3], 16),
-    oct=4,
+    oct=(4,6),
     # oct=4,
     room2=1,
     pan=[-1, 0, 1]
@@ -94,7 +97,7 @@ a1 >> apad(
     oct=5,
     # vol=.7,
     vol=1.1,
-)
+).fadein()
 
 bb >> tb303(
     chords,
@@ -118,7 +121,7 @@ k2 >> play(
     output=12,
     rate=1,
     # rate=(1,6),
-).only()
+).fadein()
 
 h2 >> play(".--(-*-[**])", sdb=1, sample=0, hpf=2000, dur=1/4, leg=10, pan=P[-1,0,1].stutter(3), amp=linvar([.8,1.6],16))
 
@@ -148,7 +151,11 @@ k2 >> kicker(
     output=12,
 )
 
+l_all.stop()
+
 k2.stop()
+
+bb.stop()
 
 k1.fadeout()
 k2.fadeout()
@@ -249,6 +256,8 @@ b1.stop()
 
 pitches = [0,2,4,5,0,2,4]
 
+k_all.stop()
+
 k4 >> play(".VxV", lpf=200, sample=4, amp=1, sdb=1, dur=1/4, room2=10, output=12, cut=.9).fadein(16)
 
 k4.fadeout()
@@ -281,4 +290,6 @@ e3.stop()
 
 Clock.bpm = linvar([120, 160], PRand(8,32))
 
+
+bpm_to(60, 32)
 
