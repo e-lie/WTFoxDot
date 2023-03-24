@@ -1,13 +1,14 @@
 
 Clock.clear()
 
-Root.default = var([0,1,2], PRand([1,8]))
 Root.default = 0
+Root.default = var([0,1,2], PRand([1,8]))
 Root.default = var(PTri(12), 4, start=Clock.mod(4))
+Root.default = var(PTri(12), 7, start=Clock.mod(7))
 Root.default = var(PTri(12), .25)
 
-Scale.default = Pvar([Scale.minor, Scale.major, Scale.minor, Scale.majorPentatonic, Scale.major], PRand(1,4)[:32]*4)
 Scale.default = Scale.minor
+Scale.default = Pvar([Scale.minor, Scale.major, Scale.minor, Scale.majorPentatonic, Scale.major], PRand(1,4)[:32]*4)
 
 Clock.meter = (4,4)
 
@@ -27,14 +28,21 @@ d1 >> play(
 )
 
 d1.pause(16,32,8)
-
 d1.pause(8,32,16)
+
+d1.only()
+
 d1.degree = "(.c)c"
+d1.degree = "V~"
+d1.sample = 2
+d1.rate=1
 d1.degree = "(.*)(cc[**]=)"
 d1.degree = "(***~..[**~][~*][*~]..cccccc)"
-d1.crush = 16
-d1.bits = 3
+d1.crush = PXhite(4,16)
+d1.bits = 4
 d1.dur=PDur(3,8)
+d1.dur=1
+
 d1.dur = var([.5, .25], [7,4])
 d1.rate = PWhite(1,3)
 
@@ -65,6 +73,8 @@ p1.pad = linvar([0, .5], 12)
 p1.modelb = linvar([0,1],32)
 p1.pluck = linvar([0,1],24)
 p1.space = linvar([0,1],32)
+
+s1.sus=linvar([])
 
 p1.fadeout(64)
 

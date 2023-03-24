@@ -11,7 +11,7 @@ Scale.default = Scale.minor
 #########################################################################
 
 bpm_to(160, 32)
-change_bpm(160, True, 0.22)
+change_bpm(120, True, -0.235)
 
 Clock.meter(4,4)
 
@@ -27,11 +27,12 @@ d6 >> play("<..*...*.>", dur=.5, sample=1, rate=(.8,1.2,1.6), amp=1.5)
 d8 >> play("/", dur=16, pan=[-1, 0, -1], amp=1.5)
 
 bb >> bbass(
+    # chords,
     chords2,
-    # chords2,
     # chords3,
     dur=PDur(3, 8),
-    oct=(2, 3),
+    # dur=cascara,
+    oct=(2,3,4),
     amp=1.5,
     # room2=3,
     sus=linvar([.5,2], 32),
@@ -54,15 +55,19 @@ k1 >> kicker(
     output=12
 )
 
+l_all.degree = chords3
+a_all.degree = chords3
+b_all.degree = chords3
+
 l1 >> blip(
     # chords,
-    chords2 + P(0,2),
-    # chords2 + P[0,2,0,-2,0,3,0,5,4,0] + P(0,2),
+    # chords2 + P(0,2),
+    chords3 + P[0,2,0,-2,0,3,0,5,4,0] + P(0,2),
     # chords2,
     # chords3,
-    dur=clave23,
+    # dur=clave23,
     # dur=.25,
-    # dur=PDur(5,8),
+    dur=PDur(5,8),
     # dur=Pvar([.5, .25, 1/3, PDur(5,8)], 8),
     sus=linvar([.4, 6], 16),
     oct=6,
@@ -72,8 +77,8 @@ l1 >> blip(
 ).pause(4, 16)
 
 l2 >> blip(
-    chords,
-    # chords + P[0, 2, 0, P(0, 2)],
+    # chords,
+    chords3 + P[0, 2, 0, P(0, 2)],
     # chords2,
     # chords3,
     dur=cascara,
@@ -86,7 +91,7 @@ l2 >> blip(
 ).pause(4, 16, 8)
 
 a1 >> apad(
-    chords,
+    chords3,
     # chords + P(0,12),
     dur=PRand(2, 8),
     sus=PRand(4, 12),
@@ -98,6 +103,8 @@ a1 >> apad(
     # vol=.7,
     vol=1.1,
 ).fadein()
+
+br >> space(chords3, oct=(3,4,6,7), amp=3, dur=[.25,.25,.5])
 
 bb >> tb303(
     chords,
@@ -208,13 +215,13 @@ n1 >> padarp(
 
 n2 >> dakeys(
     # chords,
-    chords + P[0, 2, 0, P(0, 2)],
-    # chords2,
+    # chords + P[0, 2, 0, P(0, 2)],
+    chords2,
     # chords3,
     # dur=cascara,
     dur=PDur(3,8),
     sus=linvar([.3, 3], 16),
-    oct=5,
+    oct=(4,5),
     # oct=4,
     room2=1,
     pan=[-1, 0, 1]
@@ -222,7 +229,12 @@ n2 >> dakeys(
 
 
 
-b9 >> bass303(chords, dur=PDur(3,8), sus=b1.dur-0.1, cutoff=linvar([0,1,.5],32, start=Clock.mod(4)))
+b9 >> bass303(
+    chords,
+    dur=PDur(3, 8),
+    # sus=b1.dur - 0.1,
+    # cutoff=linvar([0, 1, .5], 32, start=Clock.mod(4))
+).only()
 
 b9.cutoff=0
 b9.reso=0
@@ -292,4 +304,3 @@ Clock.bpm = linvar([120, 160], PRand(8,32))
 
 
 bpm_to(60, 32)
-

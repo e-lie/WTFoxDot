@@ -3,18 +3,18 @@ Clock.clear()
 from FoxDot import *
 from FoxDot.preset import *
 
-fordrip, gone = add_chains("fordrip1", "gone1")
-apad, souls = add_chains("apad1", "souls1")
-marimba, vibra = add_chains("marimba1", "vibra1")
+fordrip, gone = add_chains("noise/fordrip_1", "pads/gone_1")
+apad, souls = add_chains("pads/apad_1", "pads/souls_1")
+marimba, vibra = add_chains("mallets/marimba_1", "mallets/vibra_1")
 # darkpass, hpluck = add_chains("darkpass", "hpluck1")
-rdrum, bpiano = add_chains("rdrum1", "bpiano")
-dakeys, padarp = add_chains("dakeys1", "padarp1")
-acidbb, bass303 = add_chains("acidbb", "bass303")
+lavitar, pharao, sahara = add_chains("synth_keys/lavitar_1", "synth_keys/pharao_1","synth_keys/sahara_1")
+rdrum, bpiano = add_chains("drum/rdrum_1", "synth_keys/bpiano_1")
+dakeys, padarp = add_chains("synth_keys/dakeys_1", "synth_keys/padarp_1")
+acidbb, bass303 = add_chains("bass/acidbb_1", "bass/bass303_1")
 
-Root.default = var([0,1,2], PRand([1,8]))
-
-print(reainstru_factory._reaproject)
-print(reaproject)
+Clock.latency = .5
+Clock.midi_nudge = -.235
+Clock.bpm=110
 
 Root.default = 0
 Root.default = var(PTri(12), 8, start=Clock.mod(4))
@@ -27,39 +27,33 @@ Scale.default = Scale.majorPentatonic
 
 change_bpm(110, True, 0.22)
 Root.default = 0
-Scale.default = Scale.minor
+Scale.default = Pvar([Scale.major, Scale.minor, Scale.chromatic], 16)
 
 bpm_to(110)
 
-cc >> play("t", dur=1, rate=[1], pan=0, amp=[2], output=14)
+cc >> play("t", dur=1, rate=[1], pan=0, amp=[8], output=14)
+cc.always_on = True
 
 
 ######################################
 
 a1 >> apad(
-    [0, 4, -2],
-    # [0],
-    dur=PRand(2, 8),
-    # dur=4,
-    # sus=8,
+    P[0, 4, -2],
+    dur=PRand(2, 8)[:16],
     vol=1,
-    # attack=1,
-    # space=0,
-    # detail=0,
+    attack=.5,
+    space=0,
+    detail=0,
     thick_thin=0,
     oct=5,
 )
 a1.fadein(16)
 
-a1.only()
-
-a1.stop()
-
 a1.space=linvar([0,1,.4,.8,0,.6],PRand(2,24), start=Clock.mod(4))
 a1.thick_thin=linvar([0,1,.4,.8,0,.6], PRand(2,24), start=Clock.mod(4))
 a1.detail=linvar([0,1,.4,.8,0,.6],PRand(2,24), start=Clock.mod(4))
 
-a1 + (0,4,5)
+a1.degree = Pvar([P[0, 4, -2], P[0, 4, -2]+P(0,4,5)], 16)
 
 a1.oct=Pvar([5,(4,5),P*(4,6)], 8)
 
@@ -82,6 +76,7 @@ a4.dull = linvar([0,1,.4,.8,0,.6],PRand(2,24), start=Clock.mod(4))
 a4.body = linvar([0,1,.4,.8,0,.6],PRand(2,24), start=Clock.mod(4))
 a4.pitch = linvar([0,1,.4,.8,0,.6],PRand(2,24), start=Clock.mod(4))
 a4.arp = linvar([0,1,.4,.8,0,.6],PRand(2,24), start=Clock.mod(4))
+
 a4.pitch = .5
 
 a4.vol=.8
@@ -89,7 +84,7 @@ a1.vol=.8
 
 pitches = [0, 2, 5, 2, 0, -2, 5, 4]
 
-s1 >> space(
+s1 >> pharao(
     # [0],
     pitches,
     # chords2,
@@ -101,8 +96,12 @@ s1 >> space(
     amp=P[.8, .7, .8, 1.1] * 1.5,
     sus=s1.dur + 0.2,
     output=12,
-    room2=3
+    room2=3,
+    # re
+    # cutoff = .1,
+    cutoff=linvar([.1,.5],16, start=Clock.mod(4)),
 )  + (0, 5)
+# s1.fadein(16)
 
 
 s2.fadeout(24)
@@ -146,13 +145,12 @@ s2.degree = pitches
 
 s_all.ampfadeout(64)
 
-
 s2.dur = var([.25, .5, 1/3], [10,4,2])
 
 s2.degree = [0,2,0,4,1,5,0,5,3]
 s2.degree = var(pitches,.5)
 
-s2.oct=P[P(4,5,3,6), (4,5), (3,6), 5, 6, 3]
+s2.oct=P[P(4,5,3,6), (4,5), (3,6), 5, 6, 3]+1
 
 s2.oct=(5,7)
 
@@ -162,23 +160,30 @@ s2.pause(8,32, 16)
 
 s2.amp=2
 
-s2.dur=PDur(3,7)/2
-
 s2.fadeout(16)
 
 #################################################
 
-k1 >> play("V...", pdb=2, output=12, sample=4, room2=3).fadein()
+k1 >> play(
+    # degree="V...",
+    # degree = "<V.x.>",
+    # degree = "<V.x.><..[(...X)X]>",
+    # degree = "<V.x.><.(..[XV])[(...X)X]>",
+    # degree = "<V.x.><.(..[XV])[(...X)X]>",
+    degree = Pvar(["V.x.","<V.x.><.(..[XV])[(...X)X]>"],16, start=Clock.mod(4)),
+    pdb=2,
+    output=12,
+    sample=4,
+    # room2=3,
+    room2=.1,
+    lpf=700,
+    amp=.7,
+    # cut=.5,
+)
+k1.fadein()
+k1.pause(8,64)
+k1.amplify=linvar([1,1,0,0],[40,16,8,0], start=Clock.mod(4))
 
-k1.degree = "<V.x.>"
-k1.degree = "<V.x.><..[(...X)X]>"
-k1.degree = "<V.x.><.(..[XV])[(...X)X]>"
-
-k1.pause(8,48)
-
-k1.stop()
-
-k1.fadeout(32)
 
 ##################################################
 
@@ -191,12 +196,15 @@ p2 >> padarp(
     amp=.8,
     verb=0,
     delay=0,
-    detune=sinvar([0,1], PWhite(.2,3)[:16]),
+    # detune=sinvar([0,1], PWhite(.2,3)[:16]),
+    detune=0,
     expand=0,
     vol=1.2,
 )
 
 p2.vol=1.2
+
+p2.delay=1
 
 p2.verb=linvar([0,1], [32,inf], start=Clock.mod(4))
 p2.delay=linvar([0,1], [64,inf], start=Clock.mod(4)),
@@ -210,15 +218,16 @@ k1 >> play(
     sample=0,
     pdb=0,
     amp=1.5,
-    # dur=PDur(3, 8),
+    # dur=.5,
     dur=Pvar([PDur(3, 8), .25, .5, PDur(5, 8)], PRand(2, 8)),
 )
-k1.fadein()
+# k1.fadein()
 
 k1.pause(8,32)
 k1.rate = PWhite(.8,1.6)
 k1.dur = Pvar([PDur(3,8), .25, .5, PDur(5,8)], PRand(2,8))
 
+k1.lpf=4000
 k1.crush = PWhite(0,8)
 k1.bits = PWhite(3,8)
 
@@ -232,8 +241,16 @@ h2.stop()
 ############################################################
 
 a4.sampfadeout(64)
+a1.sampfadeout(64)
+
+a1.only()
 
 a4.only()
 
+a1.stop()
+
 a4.fadeout()
+
+bpm_to(100, 128)
+
 cc >> play("t", dur=1, rate=[1], pan=0, amp=[2], output=14)
