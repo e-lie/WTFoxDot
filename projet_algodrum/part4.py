@@ -3,6 +3,7 @@ Clock.clear()
 Root.default = var([0,1,2], PRand([1,8]))
 Root.default = 0
 Root.default = var(PTri(12), 4, start=Clock.mod(4))
+Root.default = var(PTri(12), 16, start=Clock.mod(4))
 Root.default = var(PTri(12), .25)
 
 Scale.default = Pvar([Scale.minor, Scale.major, Scale.minor, Scale.majorPentatonic, Scale.major], PRand(1,4)[:32]*4)
@@ -10,7 +11,11 @@ Scale.default = Scale.minor
 
 #########################################################################
 
-bpm_to(160, 32)
+k_all.stop()
+
+Clock.bpm = 140
+
+bpm_to(140, 32)
 change_bpm(120, True, -0.235)
 
 Clock.meter(4,4)
@@ -26,17 +31,20 @@ d6 >> play("<..*...*.>", dur=.5, sample=1, rate=(.8,1.2,1.6), amp=1.5)
 
 d8 >> play("/", dur=16, pan=[-1, 0, -1], amp=1.5)
 
+k3.sampfadeout()
+
 bb >> bbass(
-    # chords,
-    chords2,
+    chords,
+    # chords2,
     # chords3,
     dur=PDur(3, 8),
     # dur=cascara,
+    # oct=(2,3,4),
     oct=(2,3,4),
     amp=1.5,
-    # room2=3,
+    room2=0,
     sus=linvar([.5,2], 32),
-    # pan=var([-.5, 0, .5], 4)
+    pan=var([-.5, 0, .5], 4)
 )#.pause(8, 32)
 
 
@@ -53,18 +61,18 @@ k1 >> kicker(
     rate=1,
     amp=1.2,
     output=12
-)
+).stop()
 
-l_all.degree = chords3
-a_all.degree = chords3
-b_all.degree = chords3
+l_all.degree = chords2
+a_all.degree = chords2
+b_all.degree = chords2
 
 l1 >> blip(
     # chords,
     # chords2 + P(0,2),
-    chords3 + P[0,2,0,-2,0,3,0,5,4,0] + P(0,2),
+    # chords2 + P[0,2,0,-2,0,3,0,5,4,0] + P(0,2),
     # chords2,
-    # chords3,
+    chords3,
     # dur=clave23,
     # dur=.25,
     dur=PDur(5,8),
@@ -76,18 +84,19 @@ l1 >> blip(
     pan=var([-1, 0, 1, 0])
 ).pause(4, 16)
 
-l2 >> blip(
+y5 >> pharao(
     # chords,
     chords3 + P[0, 2, 0, P(0, 2)],
     # chords2,
     # chords3,
-    dur=cascara,
-    # dur=PDur(3,8),
+    # dur=cascara,
+    dur=PDur(3,8),
     sus=linvar([.3, 3], 16),
     oct=(4,6),
     # oct=4,
+    cutoff=.1,
     room2=1,
-    pan=[-1, 0, 1]
+    pan=[-1, 0, 1],
 ).pause(4, 16, 8)
 
 a1 >> apad(
@@ -102,18 +111,27 @@ a1 >> apad(
     oct=5,
     # vol=.7,
     vol=1.1,
-).fadein()
+)
+a1.fadein()
 
+##### PART CCCC
 br >> space(chords3, oct=(3,4,6,7), amp=3, dur=[.25,.25,.5])
 
-bb >> tb303(
-    chords,
+bb >> bass303(
+    chords3,
     dur=PDur(3, 8),
-    oct=3,
+    # dur=cascara,
+    sus=bb.dur-.1,
+    oct=4,
     amp=2,
     room2=0,
     pan=[-1, 0, 1],
+    # cutoff=0,
+    cutoff=linvar([0,1],32),
+    reso=linvar([0,1],24),
+    decay=linvar([0,1],48),
 )
+bb.fadein()
 
 k1 >> kicker("<v.>", dur=.5, amp=1, rate=1, output=12)
 
@@ -170,6 +188,7 @@ k2.fadeout()
 k1.stop()
 k2.stop()
 
+##### PART CCCC
 k3 >> play(
     '<X.><v.>',
     dur=1 / 2,
@@ -196,9 +215,26 @@ Root.default = 0
 
 pitches = [0,2,2,1,-2,0,0,1]
 
+
+
+##### PART CCCC
+s1 >> pharao(
+    [0],
+    dur=[.5, .25, .25],
+    oct=5,
+    amp=P[.8, .7, .8, 1.1] * 1.5,
+    sus=s1.dur + 0.2,
+    output=12,
+    # cutoff=.06,
+    # cutoff=linvar([.06,.5], [15*.25*15,inf], start=Clock.mod(15*.25)),
+    cutoff=linvar([.06,.5], [15*.25*15], start=Clock.mod(15*.25)),
+) + P(0, 2)
+
+
+##### PART CCCC
 n1 >> padarp(
     # chords,
-    chords + P(0,2),
+    chords3 + P(0,2),
     # chords2 + P[0,2,0,-2,0,3,0,5,4,0] + P(0,2),
     # chords2,
     # chords3,
@@ -210,16 +246,19 @@ n1 >> padarp(
     oct=6,
     # room2=3,
     # pan=[-1, 0, 0, 1, 1, 0],
-    pan=var([-1, 0, 1, 0])
+    pan=var([-1, 0, 1, 0]),
+    expand=linvar([0,1], [32,inf], start=Clock.mod(4)),
+    # verb=0,
+    verb=linvar([0,1], [32,inf], start=Clock.mod(4)),
 ).pause(4, 16)
 
 n2 >> dakeys(
     # chords,
     # chords + P[0, 2, 0, P(0, 2)],
-    chords2,
-    # chords3,
+    # chords2,
+    chords3,
     # dur=cascara,
-    dur=PDur(3,8),
+    dur=PDur(5,8),
     sus=linvar([.3, 3], 16),
     oct=(4,5),
     # oct=4,

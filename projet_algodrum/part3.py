@@ -8,12 +8,12 @@ Root.default = var(PTri(12), 7, start=Clock.mod(7))
 Root.default = var(PTri(12), .25)
 
 Scale.default = Scale.minor
+Scale.default = Scale.majorPentatonic
 Scale.default = Pvar([Scale.minor, Scale.major, Scale.minor, Scale.majorPentatonic, Scale.major], PRand(1,4)[:32]*4)
 
 Clock.meter = (4,4)
 
 bpm_to(130,24)
-change_bpm(130, True, 0.22)
 
 d1 >> play(
     ".c",
@@ -51,53 +51,73 @@ d1.rate = PWhite(1,3)
 Scale.default = Pvar([Scale.minor, Scale.major], 16)
 
 p1 >> dakeys(
-    [0, 2, 5, 2, -2, 1, 4],
-    # [0, 2, 4, 2, -2, P4],
+    # chords+P[0, 2, 5, 2, -2, 1, 4],
+    P[0, 2, 5, 2, -2, 1, 4],
+    # [0, 2, 4, 2, -2, 4],
     dur=.5,
     oct=(3,5,7),
     # oct=6,
     amp=.8,
-    # pad=0,
-    # modelb=0,
-    # pluck=1,
-    # space=.4,
+    pad=0,
+    modelb=0,
+    pluck=1,
+    space=.4,
     vol=1.5,
     # vol=1.0,
-).fadein(16)
-
-s2.fadeout(64)
-
-p1.oct=(3,5,7)
+)
+# p1.fadein(64)
 
 p1.pad = linvar([0, .5], 12) 
 p1.modelb = linvar([0,1],32)
 p1.pluck = linvar([0,1],24)
 p1.space = linvar([0,1],32)
 
-s1.sus=linvar([])
 
-p1.fadeout(64)
 
-p1.sampfadeout(32)
-
-p1.only()
-
-p1.stop()
-
-p1.stop()
+k1 >> play(
+    # degree="V...",
+    degree = "<V.x.>",
+    # degree = "<V.x.><..[(...X)X]>",
+    # degree = "<V.x.><.(..[XV])[(...X)X]>",
+    # degree = "<V.x.><.(..[XV])[(...X)X]>",
+    # degree = Pvar(["V.x.","<V.x.><.(..[XV])[(...X)X]>"],[32,16], start=Clock.mod(4)),
+    pdb=2,
+    output=12,
+    sample=2,
+    # room2=3,
+    room2=.1,
+    lpf=800,
+    amp=.8,
+    # cut=.5,
+)
+k1.fadein(24)
 
 a2 >> padarp(
     [0, 2,0,5],
     # dur=[1.1,.9],
     dur=.5,
-    oct=4,
-    amp=1.5,
-    vol=1.5,
+    oct=3,
+    amp=1,
+    vol=1,
+    # expand=0,
+    expand=linvar([0,1], [32,inf], start=Clock.mod(4)),
+    # verb=0,
+    verb=linvar([0,1], [32,inf], start=Clock.mod(4)),
+    detune=1,
+    delay=0,
 )
-a2.fadein()
+# a2.fadein()
 
-a2.fadeout(64)
+p1.sampfadeout(16)
 
-s2.stop()
-
-k1.stop()
+s1 >> pharao(
+    [0],
+    # mmelody,
+    dur=[.5, .25, .25],
+    oct=5,
+    amp=P[.8, .7, .8, 1.1] * 1.5,
+    sus=s1.dur + 0.2,
+    output=12,
+    # cutoff=.06,
+    cutoff=linvar([.06,.5], [15*.25*15,inf], start=Clock.mod(15*.25)),
+) + P(0, 2)

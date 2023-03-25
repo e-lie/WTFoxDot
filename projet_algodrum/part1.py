@@ -25,7 +25,6 @@ Scale.default = Scale.minor
 Scale.default = Scale.major
 Scale.default = Scale.majorPentatonic
 
-change_bpm(110, True, 0.22)
 Root.default = 0
 Scale.default = Pvar([Scale.major, Scale.minor, Scale.chromatic], 16)
 
@@ -86,7 +85,7 @@ pitches = [0, 2, 5, 2, 0, -2, 5, 4]
 
 s1 >> pharao(
     # [0],
-    pitches,
+    chords3+pitches,
     # chords2,
     # dur=1,
     # dur=[1,.5],
@@ -97,12 +96,17 @@ s1 >> pharao(
     sus=s1.dur + 0.2,
     output=12,
     room2=3,
+    level=1,
     # re
     # cutoff = .1,
     cutoff=linvar([.1,.5],16, start=Clock.mod(4)),
 )  + (0, 5)
-# s1.fadein(16)
 
+s1.fadein(16)
+
+# pharao
+
+s1.sampfadeout(16)
 
 s2.fadeout(24)
 
@@ -180,7 +184,8 @@ k1 >> play(
     amp=.7,
     # cut=.5,
 )
-k1.fadein()
+k1.fadein(24)
+
 k1.pause(8,64)
 k1.amplify=linvar([1,1,0,0],[40,16,8,0], start=Clock.mod(4))
 
