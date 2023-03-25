@@ -6,39 +6,29 @@ from FoxDot.preset import *
 fordrip, gone = add_chains("noise/fordrip_1", "pads/gone_1")
 apad, souls = add_chains("pads/apad_1", "pads/souls_1")
 marimba, vibra = add_chains("mallets/marimba_1", "mallets/vibra_1")
-# darkpass, hpluck = add_chains("darkpass", "hpluck1")
 lavitar, pharao, sahara = add_chains("synth_keys/lavitar_1", "synth_keys/pharao_1","synth_keys/sahara_1")
-rdrum, bpiano = add_chains("drum/rdrum_1", "synth_keys/bpiano_1")
-dakeys, padarp = add_chains("synth_keys/dakeys_1", "synth_keys/padarp_1")
-acidbb, bass303 = add_chains("bass/acidbb_1", "bass/bass303_1")
+dakeys, padarp, bass303 = add_chains("synth_keys/dakeys_1", "synth_keys/padarp_1", "bass/bass303_1")
+# darkpass, hpluck, acidbb = add_chains("darkpass", "hpluck1")
+# rdrum, bpiano = add_chains("drum/rdrum_1", "synth_keys/bpiano_1")
 
 Clock.latency = .5
 Clock.midi_nudge = -.235
+
+################################################################
+
 Clock.bpm=110
-
-Root.default = 0
-Root.default = var(PTri(12), 8, start=Clock.mod(4))
-Root.default = var(PTri(12), .25)
-
-Scale.default = Pvar([Scale.minor, Scale.major, Scale.minor, Scale.majorPentatonic, Scale.major], PRand(1,4)[:32]*4)
-Scale.default = Scale.minor
-Scale.default = Scale.major
-Scale.default = Scale.majorPentatonic
-
-Root.default = 0
-Scale.default = Pvar([Scale.major, Scale.minor, Scale.chromatic], 16)
-
-bpm_to(110)
-
 cc >> play("t", dur=1, rate=[1], pan=0, amp=[8], output=14)
 cc.always_on = True
 
+Root.default = 0
+Scale.default = Scale.major
 
 ######################################
 
 a1 >> apad(
     P[0, 4, -2],
-    dur=PRand(2, 8)[:16],
+    # dur=PRand(2, 8)[:16],
+    dur=4,
     vol=1,
     attack=.5,
     space=0,
@@ -49,31 +39,35 @@ a1 >> apad(
 a1.fadein(16)
 
 a1.space=linvar([0,1,.4,.8,0,.6],PRand(2,24), start=Clock.mod(4))
+
 a1.thick_thin=linvar([0,1,.4,.8,0,.6], PRand(2,24), start=Clock.mod(4))
+
 a1.detail=linvar([0,1,.4,.8,0,.6],PRand(2,24), start=Clock.mod(4))
+
+a1.degree = P[0,4,-2] + P(0,4,5)
+
+a1.oct=Pvar([5,(4,5),P*(4,6)], 16)
 
 a1.degree = Pvar([P[0, 4, -2], P[0, 4, -2]+P(0,4,5)], 16)
 
-a1.oct=Pvar([5,(4,5),P*(4,6)], 8)
-
-#########################################
-
-a4 >> gone([0], dur=4, dull=0, body=0, arp=0, pitch=0)
+a4 >> gone([0], dur=4, body=0, arp=0, pitch=0, oct=5, dull=linvar([0,1,.4,.8,0,.6],PRand(2,24), start=Clock.mod(4)))
 a4.fadein(32)
+
 
 a1.fadeout(16, ivol=1, fvol=.8)
 
-a4.stop()
+a4.fadeout(16, ivol=1, fvol=.8)
+
 a4.oct = 3
-a4.oct = (3,6)
 
 a4.sampfadeout(32)
 
 a4.only()
 
-a4.dull = linvar([0,1,.4,.8,0,.6],PRand(2,24), start=Clock.mod(4))
 a4.body = linvar([0,1,.4,.8,0,.6],PRand(2,24), start=Clock.mod(4))
+
 a4.pitch = linvar([0,1,.4,.8,0,.6],PRand(2,24), start=Clock.mod(4))
+
 a4.arp = linvar([0,1,.4,.8,0,.6],PRand(2,24), start=Clock.mod(4))
 
 a4.pitch = .5
@@ -85,7 +79,7 @@ pitches = [0, 2, 5, 2, 0, -2, 5, 4]
 
 s1 >> pharao(
     # [0],
-    chords3+pitches,
+    pitches,
     # chords2,
     # dur=1,
     # dur=[1,.5],
@@ -96,13 +90,11 @@ s1 >> pharao(
     sus=s1.dur + 0.2,
     output=12,
     room2=3,
-    level=1,
-    # re
     # cutoff = .1,
     cutoff=linvar([.1,.5],16, start=Clock.mod(4)),
-)  + (0, 5)
-
-s1.fadein(16)
+)
+# s1.fadein(16)
+s1 + P(0, 5)
 
 # pharao
 
@@ -132,6 +124,8 @@ s1 + P[0,1,0,0,2,-2]
 
 a1.stop()
 
+a1.fadeout(32)
+
 ###################################################
 
 s2 >> blip(
@@ -142,7 +136,8 @@ s2 >> blip(
     # oct=[5, 7, 6],
     oct=[5, 7, 6, 7],
     sus=linvar([.3, 2], [48], start=Clock.mod(4)),
-).fadein(32, fvol=1.5)
+)
+s2.fadein(16, fvol=1.5)
 
 s2.degree = pitches
 
@@ -184,7 +179,7 @@ k1 >> play(
     amp=.7,
     # cut=.5,
 )
-k1.fadein(24)
+# k1.fadein(24)
 
 k1.pause(8,64)
 k1.amplify=linvar([1,1,0,0],[40,16,8,0], start=Clock.mod(4))
@@ -226,7 +221,7 @@ k1 >> play(
     # dur=.5,
     dur=Pvar([PDur(3, 8), .25, .5, PDur(5, 8)], PRand(2, 8)),
 )
-# k1.fadein()
+k1.fadein()
 
 k1.pause(8,32)
 k1.rate = PWhite(.8,1.6)

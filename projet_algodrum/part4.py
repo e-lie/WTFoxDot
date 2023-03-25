@@ -11,14 +11,9 @@ Scale.default = Scale.minor
 
 #########################################################################
 
-k_all.stop()
-
+bpm_to(140, 32)
 Clock.bpm = 140
 
-bpm_to(140, 32)
-change_bpm(120, True, -0.235)
-
-Clock.meter(4,4)
 
 Root.default = 0
 Scale.default = Scale.major

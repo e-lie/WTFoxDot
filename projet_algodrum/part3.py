@@ -11,7 +11,10 @@ Scale.default = Scale.minor
 Scale.default = Scale.majorPentatonic
 Scale.default = Pvar([Scale.minor, Scale.major, Scale.minor, Scale.majorPentatonic, Scale.major], PRand(1,4)[:32]*4)
 
+#############################################################
+
 Clock.meter = (4,4)
+Scale.default = Scale.minor
 
 bpm_to(130,24)
 
