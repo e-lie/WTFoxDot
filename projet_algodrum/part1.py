@@ -15,7 +15,7 @@ def shift_clock(time, shift, factor=16):
     time *= factor
     shift *= factor
     return max(time-shift,0)
-cshift = 0
+cshift = 40
 
 Clock.latency = .5
 Clock.midi_nudge = -.235
@@ -25,11 +25,11 @@ Clock.midi_nudge = -.235
 Clock.bpm=110
 cc >> play("t", dur=1, rate=[1], pan=0, amp=[8], output=14)
 cc.always_on = True
-
 Root.default = 0
 Scale.default = Scale.major
+pitches = [0, 2, 5, 2, 0, -2, 5, 4]
 
-######################################
+################################################################
 
 @nextBar(shift_clock(0, cshift))
 def a():
@@ -288,28 +288,37 @@ def a():
     k1.rate = PWhite(.8,1.6)
 @nextBar(shift_clock(46, cshift))
 def a():
+    pass
+@nextBar(shift_clock(47, cshift))
+def a():
     k1.pause(8,32)
     k1.lpf=4000
     k1.crush = PWhite(0,8)
     k1.bits = PWhite(3,8)
-@nextBar(shift_clock(47, cshift))
-def a():
-    Root.default = var(PTri(12), 8, start=Clock.mod(4))
 @nextBar(shift_clock(48, cshift))
 def a():
     pass
 @nextBar(shift_clock(49, cshift))
 def a():
-    Root.default = var(PTri(12), .25, start=Clock.mod(4))
-@nextBar(shift_clock(37, cshift))
-def a():
-    Scale.default = Scale.minor
-    Root.default = 0
-    bpm_to(100, 128)
+    Root.default = var(PTri(12), 8, start=Clock.mod(4))
 @nextBar(shift_clock(50, cshift))
 def a():
     pass
+@nextBar(shift_clock(51, cshift))
+def a():
+    Root.default = var(PTri(12), .25, start=Clock.mod(4))
 @nextBar(shift_clock(52, cshift))
+def a():
+    pass
+@nextBar(shift_clock(53, cshift))
+def a():
+    Scale.default = Scale.minor
+    Root.default = 0
+    # bpm_to(100, 128)
+@nextBar(shift_clock(54, cshift))
+def a():
+    pass
+@nextBar(shift_clock(55, cshift))
 def a():
     a4.sampfadeout(24)
 

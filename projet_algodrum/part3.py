@@ -1,4 +1,3 @@
-
 Clock.clear()
 
 Root.default = 0
@@ -17,6 +16,170 @@ Clock.meter = (4,4)
 Scale.default = Scale.minor
 
 bpm_to(130,24)
+
+Root.default = 0
+
+def shift_clock(time, shift, factor=16):
+    time *= factor
+    shift *= factor
+    return max(time-shift,0)
+cshift = 0
+mmelody = P[-12,0,-2,0,5,-2,0,0,-2,5,0,-2,0,0,5]
+
+@nextBar(shift_clock(0, cshift))
+def a():
+    pass
+@nextBar(shift_clock(1, cshift))
+def a():
+    pass
+@nextBar(shift_clock(2, cshift))
+def a():
+    m1 + (0,2)
+    pass
+@nextBar(shift_clock(3, cshift))
+def a():
+    pass
+@nextBar(shift_clock(4, cshift))
+def a():
+    pass
+@nextBar(shift_clock(5, cshift))
+def a():
+    pass
+@nextBar(shift_clock(6, cshift))
+def a():
+    pass
+@nextBar(shift_clock(7, cshift))
+def a():
+    pass
+@nextBar(shift_clock(8, cshift))
+def a():
+    pass
+@nextBar(shift_clock(9, cshift))
+def a():
+    pass
+@nextBar(shift_clock(10, cshift))
+def a():
+    pass
+@nextBar(shift_clock(11, cshift))
+def a():
+    pass
+@nextBar(shift_clock(12, cshift))
+def a():
+    pass
+@nextBar(shift_clock(13, cshift))
+def a():
+    pass
+@nextBar(shift_clock(14, cshift))
+def a():
+    pass
+@nextBar(shift_clock(15, cshift))
+def a():
+    pass
+@nextBar(shift_clock(16, cshift))
+def a():
+    pass
+@nextBar(shift_clock(17, cshift))
+def a():
+    pass
+@nextBar(shift_clock(18, cshift))
+def a():
+    pass
+@nextBar(shift_clock(19, cshift))
+def a():
+    pass
+@nextBar(shift_clock(20, cshift))
+def a():
+    pass
+@nextBar(shift_clock(21, cshift))
+def a():
+    pass
+@nextBar(shift_clock(22, cshift))
+def a():
+    pass
+@nextBar(shift_clock(23, cshift))
+def a():
+    pass
+@nextBar(shift_clock(24, cshift))
+def a():
+    pass
+@nextBar(shift_clock(25, cshift))
+def a():
+    pass
+@nextBar(shift_clock(26, cshift))
+def a():
+    pass
+@nextBar(shift_clock(28, cshift))
+def a():
+    pass
+@nextBar(shift_clock(29, cshift))
+def a():
+    pass
+@nextBar(shift_clock(30, cshift))
+def a():
+    pass
+@nextBar(shift_clock(31, cshift))
+def a():
+    pass
+@nextBar(shift_clock(32, cshift))
+def a():
+    pass
+@nextBar(shift_clock(33, cshift))
+def a():
+    pass
+@nextBar(shift_clock(34, cshift))
+def a():
+    pass
+@nextBar(shift_clock(35, cshift))
+def a():
+    pass
+@nextBar(shift_clock(36, cshift))
+def a():
+    pass
+@nextBar(shift_clock(37, cshift))
+def a():
+    pass
+@nextBar(shift_clock(38, cshift))
+def a():
+    pass
+@nextBar(shift_clock(39, cshift))
+def a():
+    pass
+@nextBar(shift_clock(40, cshift))
+def a():
+    pass
+@nextBar(shift_clock(41, cshift))
+def a():
+    pass
+@nextBar(shift_clock(42, cshift))
+def a():
+    pass
+@nextBar(shift_clock(43, cshift))
+def a():
+    pass
+@nextBar(shift_clock(44, cshift))
+def a():
+    pass
+@nextBar(shift_clock(45, cshift))
+def a():
+    pass
+@nextBar(shift_clock(46, cshift))
+def a():
+    pass
+@nextBar(shift_clock(47, cshift))
+def a():
+    pass
+@nextBar(shift_clock(48, cshift))
+def a():
+    pass
+@nextBar(shift_clock(49, cshift))
+def a():
+    pass
+@nextBar(shift_clock(50, cshift))
+def a():
+    pass
+@nextBar(shift_clock(51, cshift))
+def a():
+    pass
 
 d1 >> play(
     ".c",
@@ -111,7 +274,6 @@ a2 >> padarp(
 )
 # a2.fadein()
 
-p1.sampfadeout(16)
 
 s1 >> pharao(
     [0],
@@ -120,7 +282,8 @@ s1 >> pharao(
     oct=5,
     amp=P[.8, .7, .8, 1.1] * 1.5,
     sus=s1.dur + 0.2,
-    output=12,
     # cutoff=.06,
-    cutoff=linvar([.06,.5], [15*.25*15,inf], start=Clock.mod(15*.25)),
+    cutoff=linvar([.1,.5], [15*.25*15,inf], start=Clock.mod(15*.25)),
 ) + P(0, 2)
+
+s1.sampfadeout(16)
