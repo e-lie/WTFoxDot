@@ -11,11 +11,12 @@ dakeys, padarp, bass303 = add_chains("synth_keys/dakeys_1", "synth_keys/padarp_1
 # darkpass, hpluck, acidbb = add_chains("darkpass", "hpluck1")
 # rdrum, bpiano = add_chains("drum/rdrum_1", "synth_keys/bpiano_1")
 
-def shift_clock(time, shift, factor=16):
+def shift_clock(time, shift, factor=32):
     time *= factor
     shift *= factor
     return max(time-shift,0)
-cshift = 40
+
+cshift = 0
 
 Clock.latency = .5
 Clock.midi_nudge = -.235
