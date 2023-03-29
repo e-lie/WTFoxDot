@@ -3,7 +3,7 @@ Clock.clear()
 from FoxDot import *
 from FoxDot.preset import *
 
-fordrip, gone = add_chains("noise/fordrip_1", "pads/gone_1")
+minisilver, fordrip, gone = add_chains("bass/minisilver_1", "noise/fordrip_1", "pads/gone_1")
 apad, souls = add_chains("pads/apad_1", "pads/souls_1")
 marimba, vibra = add_chains("mallets/marimba_1", "mallets/vibra_1")
 lavitar, pharao, sahara = add_chains("synth_keys/lavitar_1", "synth_keys/pharao_1","synth_keys/sahara_1")
@@ -11,7 +11,7 @@ dakeys, padarp, bass303 = add_chains("synth_keys/dakeys_1", "synth_keys/padarp_1
 # darkpass, hpluck, acidbb = add_chains("darkpass", "hpluck1")
 # rdrum, bpiano = add_chains("drum/rdrum_1", "synth_keys/bpiano_1")
 
-def shift_clock(time, shift, factor=32):
+def shift_clock(time, shift, factor=24):
     time *= factor
     shift *= factor
     return max(time-shift,0)
@@ -20,6 +20,12 @@ cshift = 0
 
 Clock.latency = .5
 Clock.midi_nudge = -.235
+
+ii >> fordrip([0,2, 4,2], dur=cubalet, oct=[4,3,5])
+
+Clock.bpm=100
+
+d1 >> play("X([.~]-)", room2=2, rate=linvar([1,2], 32))
 
 ################################################################
 
@@ -107,7 +113,7 @@ def a():
 def a():
     pitches = [0, 2, 5, 2, 0, -2, 5, 4]
     s1.degree = pitches
-    s1.dur = [.5,.25,.25] 
+    s1.dur = [.5,.25,.25]
 @nextBar(shift_clock(14, cshift))
 def a():
     pass

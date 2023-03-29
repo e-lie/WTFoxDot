@@ -21,7 +21,7 @@ chords = var([0,5,2,3],[8,4,2,2])
 chords2 = var([0,2,5,4],[8,4,2,2])
 chords3 = var([2,0,3,4],[8,4,2,2])
 
-def shift_clock(time, shift, factor=32):
+def shift_clock(time, shift, factor=16):
     time *= factor
     shift *= factor
     return max(time-shift,0)
